@@ -1,74 +1,13 @@
 from django.shortcuts import render
+from .models import Recipe
 
-def recipe_list(request, recipe_id=None):
-    recipes = {
-        "recipes": [
-            {
-                "name": "Recipe 1",
-                "ingredients": [
-                    {
-                        "name": "tomato",
-                        "quantity": "3pcs"
-                    },
-                    {
-                        "name": "onion",
-                        "quantity": "1pc"
-                    },
-                    {
-                        "name": "pork",
-                        "quantity": "1kg"
-                    },
-                    {
-                        "name": "water",
-                        "quantity": "1L"
-                    },
-                    {
-                        "name": "sinigang mix",
-                        "quantity": "1 packet"
-                    }
-                ],
-                "link": "/recipe/1"
-            },
-            {
-                "name": "Recipe 2",
-                "ingredients": [
-                    {
-                        "name": "garlic",
-                        "quantity": "1 head"
-                    },
-                    {
-                        "name": "onion",
-                        "quantity": "1pc"
-                    },
-                    {
-                        "name": "vinegar",
-                        "quantity": "1/2cup"
-                    },
-                    {
-                        "name": "water",
-                        "quantity": "1 cup"
-                    },
-                    {
-                        "name": "salt",
-                        "quantity": "1 tablespoon"
-                    },
-                    {
-                        "name": "whole black peppers",
-                        "quantity": "1 tablespoon"
-                    },
-                    {
-                        "name": "pork",
-                        "quantity": "1 kilo"
-                    }
-                ],
-                "link": "/recipe/2"
-            }
-        ]
+def recipe_list(request):
+    recipes = Recipe.objects.all()
+    ctx = {
+        'recipes': recipes
     }
-
-    if recipe_id is None:
-        return render(request, 'ledger/recipe_list.html', recipes)
+    return render(request, 'ledger/recipe_list.html', ctx)
     
-    else:
-        recipe = recipes["recipes"][recipe_id - 1]
-        return render(request, 'ledger/recipe.html', {"recipe": recipe})
+def recipe_detail(request, pk):
+    ctx = { 'recipe': Recipe.objects.get(id=pk) }
+    return render(request, 'ledger/recipe.html', ctx)
