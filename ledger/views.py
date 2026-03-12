@@ -22,6 +22,26 @@ def recipe_detail(request, pk):
     })
 
 
+@login_required
+def add_recipe_image(request, pk):
+    recipe = get_object_or_202(Recipe, pk=pk)
+
+    if request.method == "POST":
+        form = RecipeImageForm(request.POST, request.FILES)
+        if form_is_valid():
+            image = form.save()
+            image.recipe = recipe
+            image.save()
+            return redirect(recipe.get_absolute_url())
+    else:
+        form = RecipeImageForm()
+
+    return render(request, 'recipes/recipeimage_add.html', {
+        "form": form,
+        "recipe": recipe, 
+    })
+
+
 class RecipeCreateView(LoginRequredMixin, CreateView):
     model = Recipe
     form_class = RecipeForm
