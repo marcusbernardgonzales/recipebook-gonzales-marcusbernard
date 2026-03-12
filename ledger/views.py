@@ -42,7 +42,7 @@ def add_recipe_image(request, pk):
     })
 
 
-class RecipeCreateView(LoginRequredMixin, CreateView):
+class RecipeCreateView(LoginRequiredMixin, CreateView):
     model = Recipe
     form_class = RecipeForm
     template_name = 'ledger/recipe_add.html'
